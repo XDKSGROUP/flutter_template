@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qrcode/flutter_plugin_qrcode.dart';
 import 'package:fulate/common/commons.dart';
+import 'package:fulate/config/config.dart';
 import 'package:fulate/data/data.dart';
+import 'package:fulate/models/models.dart';
 import 'package:fulate/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -30,7 +34,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: MyDrawer(
-          user: currentUser, function: () => MyRouter.push(context, "person")),
+          user: currentUser ?? new User(id: null),
+          function: () => MyRouter.push(context, "person")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +74,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
+        _image.copy('newPath');
       } else {
         print('No image selected.');
       }
@@ -84,7 +90,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (!mounted) return;
-    //获取到扫描的结果进行页面更新
+
     setState(() {
       _qrcode = qrcode;
     });

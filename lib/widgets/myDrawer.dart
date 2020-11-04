@@ -17,8 +17,8 @@ class MyDrawer extends StatelessWidget {
       child: new ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-            accountName: Text(user.name),
-            accountEmail: Text(user.email),
+            accountName: Text(user?.name ?? ""),
+            accountEmail: Text(user?.tel ?? ""),
             currentAccountPicture: new GestureDetector(
               child: new CircleAvatar(
                 backgroundImage: new ExactAssetImage(user.imageUrl),

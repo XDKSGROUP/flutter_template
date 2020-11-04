@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'config/config.dart';
 import 'screens/screens.dart';
 
 void main() {
@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "main",
+      title: Location.mainTitle,
       home: NavPage(),
       debugShowCheckedModeBanner: false,
     );

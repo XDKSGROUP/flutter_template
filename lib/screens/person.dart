@@ -9,6 +9,10 @@ class PersonPage extends StatefulWidget {
 class _PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+        body: IconButton(
+      icon: Icon(Icons.wallet_giftcard),
+      onPressed: () => {},
+    ));
   }
 }
