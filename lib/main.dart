@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: Location.mainTitle,
+      title: Locate.mainTitle,
       home: NavPage(),
       debugShowCheckedModeBanner: false,
     );

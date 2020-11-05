@@ -29,3 +29,5 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 }
+
+User currentUser;

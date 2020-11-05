@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fulate/api/api.dart';
 import 'package:fulate/common/commons.dart';
 import 'package:fulate/config/config.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -29,14 +29,14 @@ class _LoginPageState extends State<LoginPage> {
             onPressed: () => login(),
             color: Colors.teal,
             textColor: Colors.white,
-            child: Text(Location.loginButtonText),
+            child: Text(Locate.loginButtonText),
             splashColor: Colors.blueAccent,
           ),
           MaterialButton(
             onPressed: () => loginOut(),
             color: Colors.teal,
             textColor: Colors.white,
-            child: Text(Location.loginOutButtonText),
+            child: Text(Locate.loginOutButtonText),
             splashColor: Colors.blueAccent,
           )
         ],
@@ -47,16 +47,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    this._username.text = '13253495869';
-    this._password.text = '112233';
+    _username = TextEditingController(text: '13253495869');
+    _password = TextEditingController(text: '112233');
   }
 
-  TextEditingController _username = TextEditingController();
-  TextEditingController _password = TextEditingController();
-
+  TextEditingController _username;
+  TextEditingController _password;
   login() async {
     String result =
-        await MyHttpRequest.login(this._username.text, this._password.text);
+        await UserApi.login(this._username.text, this._password.text);
     if (result != null && result.isNotEmpty) {
       print(result);
     } else {
@@ -65,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   loginOut() async {
-    MyHttpRequest.loginOut();
+    UserApi.loginOut();
     MyRouter.pushNoBack(context, 'login');
   }
 }

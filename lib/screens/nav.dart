@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fulate/common/commons.dart';
+import 'package:fulate/api/api.dart';
 
 import 'screens.dart';
 
@@ -57,7 +57,7 @@ class _NavPageState extends State<NavPage> {
 
   @override
   void initState() {
-    MyHttpRequest.checkLogin(context);
+    UserApi.checkLogin(context);
     super.initState();
     if (pages == null) {
       pages = [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:fulate/common/commons.dart';
+import 'package:fulate/api/api.dart';
 import 'package:fulate/config/palette.dart';
 import 'package:fulate/screens/screens.dart';
 
@@ -14,7 +14,7 @@ class MyRouter {
   static const loginPage = 'login';
 
   Widget _getPage(String url, dynamic params, BuildContext context) {
-    if (url != loginPage) MyHttpRequest.checkLogin(context);
+    if (url != loginPage) UserApi.checkLogin(context);
     if (url.startsWith('https://') || url.startsWith('http://')) {
       return WebviewScaffold(
         url: url,

@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qrcode/flutter_plugin_qrcode.dart';
 import 'package:fulate/common/commons.dart';
-import 'package:fulate/config/config.dart';
-import 'package:fulate/data/data.dart';
 import 'package:fulate/models/models.dart';
 import 'package:fulate/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -74,7 +71,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        _image.copy('newPath');
+        _image.copy('newPath'); //无用,保持_image被引用
       } else {
         print('No image selected.');
       }
