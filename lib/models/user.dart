@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class CurrentUser with ChangeNotifier {
   CurrentUser({
-    int id,
+    int id = 0,
     String name = "",
     String tel = "",
     this.imageUrl = 'assets/images/user.jpg',
@@ -49,4 +49,12 @@ class CurrentUser with ChangeNotifier {
   String toString() {
     return jsonEncode(this.toJson());
   }
+
+  fromJson(Map json) {
+    id = json["id"];
+    name = json["nickname"];
+    tel = json["username"];
+  }
+
+  get isLogin => this != null && this.id != null && this.id != 0;
 }

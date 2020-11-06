@@ -43,7 +43,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(Locate.loginOutButtonText),
             splashColor: Colors.blueAccent,
           ),
-          new Text("token:${MyGlobal.token}(ui not realtime)"),
           new Text("currentUser:${jsonEncode(context.watch<CurrentUser>())}"),
         ],
       )),
@@ -53,8 +52,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _username = TextEditingController(text: '13253495869');
-    _password = TextEditingController(text: '112233');
+    _username = TextEditingController(text: '100012');
+    _password = TextEditingController(text: '123456');
   }
 
   TextEditingController _username;
@@ -63,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
     String result =
         await UserApi.login(this._username.text, this._password.text);
     if (result != null && result.isNotEmpty) {
+      print(result);
     } else {
       MyRouter.pushNoBack(context, 'nav');
     }
