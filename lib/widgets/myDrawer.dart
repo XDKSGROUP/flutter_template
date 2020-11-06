@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fulate/models/models.dart';
+import 'package:provider/provider.dart';
 
 class MyDrawer extends StatelessWidget {
-  final User user;
   final Function function;
 
-  const MyDrawer({
+  MyDrawer({
     Key key,
-    @required this.user,
     @required this.function,
   }) : super(key: key);
   @override
@@ -17,17 +16,19 @@ class MyDrawer extends StatelessWidget {
       child: new ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-            accountName: Text(user?.name ?? ""),
-            accountEmail: Text(user?.tel ?? ""),
+            accountName: Text(context.watch<CurrentUser>().name),
+            accountEmail: Text(context.watch<CurrentUser>().tel),
             currentAccountPicture: new GestureDetector(
               child: new CircleAvatar(
-                backgroundImage: new ExactAssetImage(user.imageUrl),
+                backgroundImage:
+                    new ExactAssetImage(context.watch<CurrentUser>().imageUrl),
               ),
             ),
             decoration: new BoxDecoration(
               image: new DecorationImage(
                 fit: BoxFit.fill,
-                image: new ExactAssetImage(user.backgroundImageUrl),
+                image: new ExactAssetImage(
+                    context.watch<CurrentUser>().backgroundImageUrl),
               ),
             ),
           ),

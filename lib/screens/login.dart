@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fulate/api/api.dart';
 import 'package:fulate/common/commons.dart';
 import 'package:fulate/config/config.dart';
+import 'package:fulate/models/models.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -38,7 +42,9 @@ class _LoginPageState extends State<LoginPage> {
             textColor: Colors.white,
             child: Text(Locate.loginOutButtonText),
             splashColor: Colors.blueAccent,
-          )
+          ),
+          new Text("token:${MyGlobal.token}(ui not realtime)"),
+          new Text("currentUser:${jsonEncode(context.watch<CurrentUser>())}"),
         ],
       )),
     );
@@ -57,7 +63,6 @@ class _LoginPageState extends State<LoginPage> {
     String result =
         await UserApi.login(this._username.text, this._password.text);
     if (result != null && result.isNotEmpty) {
-      print(result);
     } else {
       MyRouter.pushNoBack(context, 'nav');
     }

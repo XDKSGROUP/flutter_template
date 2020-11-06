@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'dart:convert';
 
-class User with ChangeNotifier {
-  User({
-    @required this.id,
+import 'package:flutter/material.dart';
+
+class CurrentUser with ChangeNotifier {
+  CurrentUser({
+    int id,
     String name = "",
     String tel = "",
     this.imageUrl = 'assets/images/user.jpg',
@@ -11,23 +12,41 @@ class User with ChangeNotifier {
   })  : this._name = name,
         this._tel = tel;
 
-  int id;
-  String imageUrl;
-  String backgroundImageUrl;
+  int _id;
+  get id => _id;
+  set id(int id) {
+    _id = id;
+    notifyListeners();
+  }
 
-  String _tel = '';
+  String _tel;
   get tel => _tel;
   set tel(String email) {
     _tel = email;
     notifyListeners();
   }
 
-  String _name = '';
+  String _name;
   get name => _name;
   set name(String name) {
     _name = name;
     notifyListeners();
   }
-}
 
-User currentUser;
+  String imageUrl;
+  String backgroundImageUrl;
+
+  Map toJson() {
+    Map map = new Map();
+    map["id"] = this.id;
+    map["name"] = this.name;
+    map["tel"] = this.tel;
+    map["imageUrl"] = this.imageUrl;
+    map["backgroundImageUrl"] = this.backgroundImageUrl;
+    return map;
+  }
+
+  String toString() {
+    return jsonEncode(this.toJson());
+  }
+}

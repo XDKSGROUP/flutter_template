@@ -5,18 +5,18 @@ import 'package:fulate/common/commons.dart';
 import 'package:fulate/config/config.dart';
 import 'package:fulate/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class UserApi {
   static Future<void> checkLogin(BuildContext context) async {
     print('checkLogin');
-    print(currentUser);
-    if (currentUser != null && currentUser.id != null) return;
+    if (context.watch<CurrentUser>().id != null) return;
     if (MyGlobal.token == null || MyGlobal.token.isEmpty) {
       var prefs = await SharedPreferences.getInstance();
       MyGlobal.token = prefs.getString(Locate.tokenText);
     }
     if (MyGlobal.token != null && MyGlobal.token.isNotEmpty) {
-      bool isLogin = await userInfo();
+      bool isLogin = await userInfo(context);
       if (isLogin) return;
     }
     MyRouter.pushNoBack(context, 'login');
@@ -28,7 +28,6 @@ class UserApi {
 
     String result = await MyHttpRequest.post(url, data);
     Map json = jsonDecode(result);
-    print(json);
     if (json["code"] == 200) {
       MyGlobal.token = json["data"]["tokenHead"] + " " + json["data"]["token"];
       final prefs = SharedPreferences.getInstance();
@@ -43,16 +42,15 @@ class UserApi {
     prefs.remove(Locate.tokenText);
   }
 
-  static userInfo() async {
+  static userInfo(BuildContext context) async {
     var url = "/sso/info";
     String result = await MyHttpRequest.get(url);
     Map json = jsonDecode(result);
-    print(json);
     if (json["code"] == 200) {
-      currentUser = new User(
-          id: json["data"]["id"],
-          name: json["data"]["nickname"],
-          tel: json["data"]["username"]);
+      CurrentUser user = context.read<CurrentUser>();
+      user.id = json["data"]["id"];
+      user.name = json["data"]["nickname"];
+      user.tel = json["data"]["username"];
       return true;
     }
   }

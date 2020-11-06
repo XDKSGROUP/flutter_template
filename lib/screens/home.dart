@@ -16,7 +16,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -30,9 +29,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: MyDrawer(
-          user: currentUser ?? new User(id: null),
-          function: () => MyRouter.push(context, "person")),
+      drawer: new MyDrawer(
+        function: () => MyRouter.push(context, "person"),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,8 +71,6 @@ class _HomePageState extends State<HomePage> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
         _image.copy('newPath'); //无用,保持_image被引用
-      } else {
-        print('No image selected.');
       }
     });
   }
