@@ -57,8 +57,8 @@ class _NavPageState extends State<NavPage> {
 
   @override
   void initState() {
-    UserApi.checkLogin(context);
     super.initState();
+    UserApi.checkLogin(context);
     if (pages == null) {
       pages = [
         HomePage(),

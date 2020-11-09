@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text("Login")),
       body: Container(
           child: Column(
         children: <Widget>[
@@ -52,24 +52,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _username = TextEditingController(text: '100012');
-    _password = TextEditingController(text: '123456');
+    _username = TextEditingController(text: '13253495869');
+    _password = TextEditingController(text: '112233');
   }
 
   TextEditingController _username;
   TextEditingController _password;
+
   login() async {
-    String result =
-        await UserApi.login(this._username.text, this._password.text);
-    if (result != null && result.isNotEmpty) {
-      print(result);
-    } else {
-      MyRouter.pushNoBack(context, 'nav');
-    }
+    await UserApi.login(this._username.text, this._password.text);
+    MyRouter.pushNoBack(context, 'nav');
   }
 
-  loginOut() async {
-    UserApi.loginOut();
+  loginOut() {
+    UserApi.loginOut(context);
     MyRouter.pushNoBack(context, 'login');
   }
 }

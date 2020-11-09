@@ -51,9 +51,17 @@ class CurrentUser with ChangeNotifier {
   }
 
   fromJson(Map json) {
-    id = json["id"];
-    name = json["nickname"];
-    tel = json["username"];
+    if (json != null) {
+      id = json["id"];
+      name = json["nickname"];
+      tel = json["username"];
+    }
+  }
+
+  update(CurrentUser user) {
+    id = user.id;
+    name = user.name;
+    tel = user.tel;
   }
 
   get isLogin => this != null && this.id != null && this.id != 0;

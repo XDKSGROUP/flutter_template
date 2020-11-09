@@ -5,16 +5,15 @@ import 'package:fulate/api/api.dart';
 import 'package:fulate/config/palette.dart';
 import 'package:fulate/screens/screens.dart';
 
-///https://www.jianshu.com/p/b9d6ec92926f
-
 class MyRouter {
   static const homePage = '/';
   static const navPage = 'nav';
   static const personPage = 'person';
   static const loginPage = 'login';
+  static const whiteListWithLogin = [loginPage];
 
   Widget _getPage(String url, dynamic params, BuildContext context) {
-    if (url != loginPage) UserApi.checkLogin(context);
+    checkLogin(url, context);
     if (url.startsWith('https://') || url.startsWith('http://')) {
       return WebviewScaffold(
         url: url,
@@ -48,5 +47,10 @@ class MyRouter {
         new MaterialPageRoute(builder: (context) {
       return _getPage(url, params, context);
     }), (route) => route == null);
+  }
+
+  void checkLogin(url, context) {
+    if (whiteListWithLogin.contains(url)) return;
+    UserApi.checkLogin(context);
   }
 }
