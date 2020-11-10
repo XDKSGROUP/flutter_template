@@ -47,7 +47,7 @@ class CurrentUser with ChangeNotifier {
   }
 
   String toString() {
-    return jsonEncode(this.toJson());
+    return jsonEncode({this.toJson()});
   }
 
   fromJson(Map json) {

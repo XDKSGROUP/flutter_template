@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fulate/common/commons.dart';
 import 'package:fulate/models/models.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,13 @@ class _PersonPageState extends State<PersonPage> {
                 context.read<CurrentUser>().name = this.name.text;
               },
               child: Text("修改name Locality"),
-            )
+            ),
+            FlatButton(
+              onPressed: () {
+                RouterGenerator.navigatorKey.currentState.pushNamed("/login");
+              },
+              child: Text("go to loginPage"),
+            ),
           ],
         ));
   }

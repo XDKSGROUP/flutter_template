@@ -35,13 +35,6 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(Locate.loginButtonText),
             splashColor: Colors.blueAccent,
           ),
-          MaterialButton(
-            onPressed: () => loginOut(),
-            color: Colors.teal,
-            textColor: Colors.white,
-            child: Text(Locate.loginOutButtonText),
-            splashColor: Colors.blueAccent,
-          ),
           new Text("currentUser:${jsonEncode(context.watch<CurrentUser>())}"),
         ],
       )),
@@ -60,10 +53,5 @@ class _LoginPageState extends State<LoginPage> {
 
   login() async {
     await UserApi.login(this._username.text, this._password.text);
-    Navigator.of(context).pushNamedAndRemoveUntil('/nav', (route) => false);
-  }
-
-  loginOut() async {
-    UserApi.loginOut(context);
   }
 }

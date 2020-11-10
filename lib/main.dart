@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fulate/common/routerGenerator.dart';
 import 'package:fulate/models/models.dart';
+import 'package:fulate/screens/nav.dart';
 import 'package:provider/provider.dart';
+import 'common/commons.dart';
 import 'config/config.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Locate.mainTitle,
-      initialRoute: '/nav',
+      home: NavPage(),
       onGenerateRoute: RouterGenerator.generateRoute,
       navigatorKey: RouterGenerator.navigatorKey,
       debugShowCheckedModeBanner: false,

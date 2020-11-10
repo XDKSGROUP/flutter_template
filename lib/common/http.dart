@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fulate/config/config.dart';
 import 'package:http/http.dart' as http;
 
+import 'commons.dart';
+
 class MyHttpRequest {
   static final client = http.Client();
 
@@ -13,7 +15,7 @@ class MyHttpRequest {
     if (response.statusCode == 200) {
       return parse(response.body);
     } else {
-      print(response);
+      eventBus.fire(HttpErrorEvent(response.statusCode, response.body));
     }
   }
 
@@ -23,17 +25,17 @@ class MyHttpRequest {
     if (response.statusCode == 200) {
       return parse(response.body);
     } else {
-      print(response);
+      eventBus.fire(HttpErrorEvent(response.statusCode, response.body));
     }
   }
 
   static parse(String body) {
     var json = jsonDecode(body);
-    String code = json["code"].toString();
-    if (code != "200") {
-      print("ui should show errorMessage");
-      print(json);
+    int code = json["code"];
+    if (code == 200) {
+      return json["data"];
+    } else {
+      eventBus.fire(HttpInternalErrorEvent(code, json["message"].toString()));
     }
-    return json["data"];
   }
 }

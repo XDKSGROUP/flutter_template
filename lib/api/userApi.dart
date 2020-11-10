@@ -15,9 +15,11 @@ class UserApi {
     MyGlobal.token = json["tokenHead"] + " " + json["token"];
     SharedPreferences.getInstance()
         .then((value) => value.setString(Locate.tokenName, MyGlobal.token));
+    RouterGenerator.navigatorKey.currentState
+        .pushNamedAndRemoveUntil("/nav", (route) => false);
   }
 
-  static loginOut(context) {
+  static loginOut(context) async {
     MyGlobal.token = null;
     SharedPreferences.getInstance()
         .then((value) => value.remove(Locate.tokenName));
@@ -27,15 +29,18 @@ class UserApi {
   static checkLogin(BuildContext context) async {
     print("check login");
     if (Provider.of<CurrentUser>(context, listen: false).isLogin) return;
-    if (MyGlobal.token == null || MyGlobal.token.isEmpty) {
+    if (MyGlobal.token?.isEmpty ?? true) {
       var prefs = await SharedPreferences.getInstance();
       MyGlobal.token = prefs.getString(Locate.tokenName);
     }
-    if (MyGlobal.token?.isNotEmpty ?? true) {
+    if (MyGlobal.token?.isNotEmpty ?? false) {
       await userInfo(context);
     }
-    if (!Provider.of<CurrentUser>(context, listen: false).isLogin)
-      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!Provider.of<CurrentUser>(context, listen: false).isLogin)
+        RouterGenerator.navigatorKey.currentState
+            .pushNamedAndRemoveUntil("/login", (route) => false);
+    });
   }
 
   static userInfo(BuildContext context) async {
