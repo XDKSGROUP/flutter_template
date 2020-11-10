@@ -14,7 +14,7 @@ class _PersonPageState extends State<PersonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: Icon(Icons.arrow_back),
+          title: Text('no need login'),
         ),
         body: Column(
           children: [

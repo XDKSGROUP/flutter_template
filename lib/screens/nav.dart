@@ -12,6 +12,7 @@ class NavPage extends StatefulWidget {
 class _NavPageState extends State<NavPage> {
   @override
   Widget build(BuildContext context) {
+    if (_selectIndex == 0) UserApi.checkLogin(context);
     return Scaffold(
       body: new Stack(
         children: [
@@ -38,27 +39,9 @@ class _NavPageState extends State<NavPage> {
     );
   }
 
-  int _selectIndex = 0;
-  List<Widget> pages;
-  List<BottomNavigationBarItem> itemList;
-
-  final itemNames = [
-    _Item('首页', 'assets/images/ic_tab_home_active.png',
-        'assets/images/ic_tab_home_normal.png'),
-    _Item('书影音', 'assets/images/ic_tab_subject_active.png',
-        'assets/images/ic_tab_subject_normal.png'),
-    _Item('小组', 'assets/images/ic_tab_group_active.png',
-        'assets/images/ic_tab_group_normal.png'),
-    _Item('市集', 'assets/images/ic_tab_shiji_active.png',
-        'assets/images/ic_tab_shiji_normal.png'),
-    _Item('我的', 'assets/images/ic_tab_profile_active.png',
-        'assets/images/ic_tab_profile_normal.png')
-  ];
-
   @override
   void initState() {
     super.initState();
-    UserApi.checkLogin(context);
     if (pages == null) {
       pages = [
         HomePage(),
@@ -82,6 +65,23 @@ class _NavPageState extends State<NavPage> {
           .toList();
     }
   }
+
+  int _selectIndex = 0;
+  List<Widget> pages;
+  List<BottomNavigationBarItem> itemList;
+
+  final itemNames = [
+    _Item('首页', 'assets/images/ic_tab_home_active.png',
+        'assets/images/ic_tab_home_normal.png'),
+    _Item('书影音', 'assets/images/ic_tab_subject_active.png',
+        'assets/images/ic_tab_subject_normal.png'),
+    _Item('小组', 'assets/images/ic_tab_group_active.png',
+        'assets/images/ic_tab_group_normal.png'),
+    _Item('市集', 'assets/images/ic_tab_shiji_active.png',
+        'assets/images/ic_tab_shiji_normal.png'),
+    _Item('我的', 'assets/images/ic_tab_profile_active.png',
+        'assets/images/ic_tab_profile_normal.png')
+  ];
 
   Widget _getPagesWidget(int index) {
     return Offstage(

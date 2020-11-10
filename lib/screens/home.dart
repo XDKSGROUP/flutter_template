@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_plugin_qrcode/flutter_plugin_qrcode.dart';
-import 'package:fulate/common/commons.dart';
 import 'package:fulate/models/models.dart';
 import 'package:fulate/widgets/widgets.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: new MyDrawer(
         user: context.watch<CurrentUser>(),
-        function: () => MyRouter.push(context, "person"),
+        function: () => Navigator.of(context).pushNamed('/person'),
       ),
       body: Center(
         child: Column(

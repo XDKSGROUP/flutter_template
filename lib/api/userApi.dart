@@ -18,6 +18,7 @@ class UserApi {
   }
 
   static loginOut(context) {
+    MyGlobal.token = null;
     SharedPreferences.getInstance()
         .then((value) => value.remove(Locate.tokenName));
     Provider.of<CurrentUser>(context, listen: false).update(new CurrentUser());
@@ -34,7 +35,7 @@ class UserApi {
       await userInfo(context);
     }
     if (!Provider.of<CurrentUser>(context, listen: false).isLogin)
-      MyRouter.pushNoBack(context, 'login');
+      Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
   }
 
   static userInfo(BuildContext context) async {

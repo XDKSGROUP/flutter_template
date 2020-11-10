@@ -36,8 +36,10 @@ class MyDrawer extends StatelessWidget {
             onTap: function,
           ),
           new ListTile(
-            title: new Text("搜索"),
+            title: new Text("webview"),
             trailing: new Icon(Icons.search),
+            onTap: () =>
+                Navigator.of(context).pushNamed('https://buguoheng.com'),
           ),
           new Divider(),
           new ListTile(

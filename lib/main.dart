@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fulate/common/routerGenerator.dart';
 import 'package:fulate/models/models.dart';
 import 'package:provider/provider.dart';
 import 'config/config.dart';
-import 'screens/screens.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Locate.mainTitle,
-      home: NavPage(),
+      initialRoute: '/nav',
+      onGenerateRoute: RouterGenerator.generateRoute,
+      navigatorKey: RouterGenerator.navigatorKey,
       debugShowCheckedModeBanner: false,
     );
   }

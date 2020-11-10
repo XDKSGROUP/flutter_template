@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fulate/api/api.dart';
-import 'package:fulate/common/commons.dart';
 import 'package:fulate/config/config.dart';
 import 'package:fulate/models/models.dart';
 import 'package:provider/provider.dart';
@@ -61,11 +60,10 @@ class _LoginPageState extends State<LoginPage> {
 
   login() async {
     await UserApi.login(this._username.text, this._password.text);
-    MyRouter.pushNoBack(context, 'nav');
+    Navigator.of(context).pushNamedAndRemoveUntil('/nav', (route) => false);
   }
 
-  loginOut() {
+  loginOut() async {
     UserApi.loginOut(context);
-    MyRouter.pushNoBack(context, 'login');
   }
 }
