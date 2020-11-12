@@ -45,7 +45,7 @@ class _NavPageState extends State<NavPage> {
 
   final pages = [
     HomePage(),
-    PersonPage(),
+    EthPage(),
     PersonPage(),
     PersonPage(),
   ];

@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _username = TextEditingController(text: '13253495869');
-    _password = TextEditingController(text: '112233');
+    _password = TextEditingController(text: '123456');
   }
 
   TextEditingController _username;
