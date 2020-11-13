@@ -1,8 +1,8 @@
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fulate/api/api.dart';
-import 'package:wallet_hd/wallet_hd.dart';
+import 'package:fulate/common/commons.dart';
+import 'package:fulate/config/config.dart';
 
 class EthPage extends StatefulWidget {
   @override
@@ -12,33 +12,131 @@ class EthPage extends StatefulWidget {
 class _EthState extends State<EthPage> {
   @override
   Widget build(BuildContext context) {
-    createAddress();
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(MyGlobal.ethNetWork == 'mainnet'
+            ? "正式网"
+            : MyGlobal.ethNetWork == 'ropsten'
+                ? "测试网"
+                : "未知网络"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.track_changes),
+            onPressed: () {
+              setState(() {
+                if (MyGlobal.ethNetWork == 'mainnet') {
+                  MyGlobal.ethNetWork = 'ropsten';
+                } else {
+                  MyGlobal.ethNetWork = 'mainnet';
+                }
+              });
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            decoration: InputDecoration(labelText: '助记词'),
+            controller: this.mnemonic,
+          ),
+          MaterialButton(
+            onPressed: () => loadAddress(),
+            color: Colors.teal,
+            textColor: Colors.white,
+            child: Text("使用助记词生成地址"),
+            splashColor: Colors.blueAccent,
+          ),
+          Text("Eth地址: ${this.from.text}"),
+          Text("余额: ${this.balance.text}"),
+          TextFormField(
+            decoration: InputDecoration(labelText: '发送给'),
+            controller: this.to,
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: '金额'),
+            controller: this.amount,
+          ),
+          Text(
+              "矿工费: ${(BigInt.parse(this.gasPrice.text) * BigInt.parse(this.gasLimit.text)) / new BigInt.from(10).pow(18)}"),
+          MaterialButton(
+            onPressed: () => send(),
+            color: Colors.teal,
+            textColor: Colors.white,
+            child: Text(Locate.sendButtonText),
+            splashColor: Colors.blueAccent,
+          ),
+          Text("交易哈希: ${this.txHash.text}"),
+        ],
+      ),
+    );
   }
 
-  createAddress() async {
-    String mnemonic =
-        "then story swamp emotion valve spy improve raccoon inflict sing moment dish";
-    Map<String, String> mapAddr = await WalletHd.getAccountAddress(mnemonic,
-        derivePath: "m/44'/60'/0'/0/0");
-    String ethAddr = mapAddr["ETH"];
-    String to = "0x6b926ff3674315c5a2b0e0d46151986291143d81";
-
-    testTransactionETH(mnemonic, ethAddr, to, '0.01');
+  @override
+  void initState() {
+    super.initState();
+    mnemonic = TextEditingController(
+        text:
+            'then story swamp emotion valve spy improve raccoon inflict sing moment dish');
+    to = TextEditingController(
+        text: ('0x6B926Ff3674315c5A2B0e0d46151986291143D80').toLowerCase());
+    amount = TextEditingController(text: '0.01');
+    from = TextEditingController(text: '');
+    gasLimit = TextEditingController(text: '21000');
+    gasPrice = TextEditingController(text: '0');
+    txHash = TextEditingController(text: '');
+    balance = TextEditingController(text: '');
+    loadAddress();
   }
 
-  Future testTransactionETH(
-    String mnemonic,
-    String fromAddress,
-    String toAddress,
-    String amount,
-  ) async {
-    String gasPrice = await EthApi.gasPrice();
-    int nonce = await EthApi.getNonce(fromAddress);
+  TextEditingController mnemonic;
+  TextEditingController to;
+  TextEditingController amount;
+  TextEditingController from;
+  TextEditingController gasPrice;
+  TextEditingController gasLimit;
+  TextEditingController txHash;
+  TextEditingController balance;
+  int nonce;
 
-    String txPack = await WalletHd.transactionETH(
-        mnemonic, fromAddress, toAddress, amount, gasPrice, nonce);
+  send() async {
+    await createAddress(this.mnemonic.text, this.to.text, this.amount.text);
+  }
+
+  createAddress(mnemonic, to, amount) async {
+    int nonce = await EthApi.getNonce(this.from.text);
+
+    String txPack = await MyWallet.transactionETH(
+        mnemonic, this.from.text, to, amount, this.gasPrice.text, nonce,
+        network: MyGlobal.ethNetWork);
+
     var result = await EthApi.sendRawTransaction(txPack);
+    setState(() {
+      txHash = TextEditingController(text: result);
+    });
     print(result);
+  }
+
+  void loadAddress() async {
+    setState(() {
+      from = TextEditingController(text: '');
+      balance = TextEditingController(text: '');
+    });
+    setState(() {});
+    await Future.wait<dynamic>([
+      MyWallet.getEthAddress(this.mnemonic.text),
+      EthApi.gasPrice(),
+    ]).then((e) {
+      setState(() {
+        from = TextEditingController(text: e[0]);
+        gasPrice = TextEditingController(text: e[1]);
+      });
+    });
+    EthApi.getBalance(this.from.text).then((value) {
+      setState(() {
+        balance = TextEditingController(text: value);
+      });
+    });
   }
 }

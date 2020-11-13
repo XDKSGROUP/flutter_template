@@ -21,6 +21,13 @@ class EthApi {
     return json['transactionCount'];
   }
 
+  static Future<String> getBalance(address) async {
+    var url = "/eth/getBalance";
+    var data = {"address": "$address"};
+    Map json = await MyHttpRequest.post(url, data);
+    return (BigInt.from(json['balance']) / BigInt.from(10).pow(18)).toString();
+  }
+
   static sendRawTransaction(signMessage) async {
     var url = "/eth/sendRawTransaction";
     var data = {"signMessage": "$signMessage"};
