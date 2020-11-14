@@ -87,7 +87,6 @@ class _EthState extends State<EthPage> {
     gasPrice = TextEditingController(text: '0');
     txHash = TextEditingController(text: '');
     balance = TextEditingController(text: '');
-    loadAddress();
   }
 
   TextEditingController mnemonic;
@@ -105,7 +104,7 @@ class _EthState extends State<EthPage> {
   }
 
   createAddress(mnemonic, to, amount) async {
-    int nonce = await EthApi.getNonce(this.from.text);
+    // int nonce = await EthApi.getNonce(this.from.text);
 
     String txPack = await MyWallet.transactionETH(
         mnemonic, this.from.text, to, amount, this.gasPrice.text, nonce,
@@ -123,7 +122,6 @@ class _EthState extends State<EthPage> {
       from = TextEditingController(text: '');
       balance = TextEditingController(text: '');
     });
-    setState(() {});
     await Future.wait<dynamic>([
       MyWallet.getEthAddress(this.mnemonic.text),
       EthApi.gasPrice(),
@@ -133,9 +131,13 @@ class _EthState extends State<EthPage> {
         gasPrice = TextEditingController(text: e[1]);
       });
     });
-    EthApi.getBalance(this.from.text).then((value) {
+    Future.wait<dynamic>([
+      EthApi.getBalance(this.from.text),
+      EthApi.getNonce(this.from.text),
+    ]).then((e) {
       setState(() {
-        balance = TextEditingController(text: value);
+        balance = TextEditingController(text: e[0]);
+        nonce = TextEditingController(text: e[1]) as int;
       });
     });
   }
